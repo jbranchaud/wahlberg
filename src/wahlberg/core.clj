@@ -24,7 +24,6 @@
   "Tokenize the given string based primarily on whitespace"
   [input]
   (clojure.string/split input #"[\s]+"))
-;(tokenize-words "these are some  words   to\tsplit\non.")
 
 ;
 ; organize into frequency map
@@ -40,7 +39,6 @@
         (assoc freq-map lead (assoc lead-map follow (inc follow-val)))))
     {}
     (partition 2 1 (conj words ""))))
-;(generate-frequency-map ["this" "is" "this" "is" "this" "is" "a" "vector" "of" "this" "words"])
 
 ;
 ; convert into probability map
@@ -58,7 +56,6 @@
                                follow-map))))
     {}
     freq-map))
-;(generate-probability-map (generate-frequency-map ["this" "is" "this" "is" "this" "is" "a" "vector" "of" "this" "words"]))
 
 (defn ends-in-punctuation
   "Determines if the given string ends in punctuation"
