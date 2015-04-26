@@ -39,7 +39,7 @@
             follow-val (or (get lead-map follow) 0)]
         (assoc freq-map lead (assoc lead-map follow (inc follow-val)))))
     {}
-    (partition 2 1 words)))
+    (partition 2 1 (conj words ""))))
 ;(generate-frequency-map ["this" "is" "this" "is" "this" "is" "a" "vector" "of" "this" "words"])
 
 ;
