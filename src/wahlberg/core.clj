@@ -2,7 +2,7 @@
   (:gen-class))
 
 ;
-; read content from data source (file, http, etc.)
+; Read content from data source (file, http, etc.)
 ;
 (defn get-source
   "Read in the source content from the file with the given name"
@@ -10,7 +10,7 @@
   (slurp filename))
 
 ;
-; filter out all bad characters (", -, etc.)
+; Remove all the junk characters from the input
 ;
 (defn filter-input
   "Remove all the junk characters from the input"
@@ -18,7 +18,7 @@
   (clojure.string/replace input #"" ""))
 
 ;
-; split everything on whitespace
+; Tokenize the given string based primarily on whitespace
 ;
 (defn tokenize-words
   "Tokenize the given string based primarily on whitespace"
@@ -26,7 +26,7 @@
   (clojure.string/split input #"[\s]+"))
 
 ;
-; organize into frequency map
+; Generate a map of word frequencies as they follow one another
 ;
 (defn generate-frequency-map
   "Generate a map of word frequencies as they follow one another"
@@ -41,7 +41,7 @@
     (partition 2 1 (conj words ""))))
 
 ;
-; convert into probability map
+; Generate a map of word probabilities as they follow one another
 ;
 (defn generate-probability-map
   "Generate a map of word probabilities as they follow one another"
@@ -57,11 +57,17 @@
     {}
     freq-map))
 
+;
+; Determines if the given string ends in punctuation
+;
 (defn ends-in-punctuation
   "Determines if the given string ends in punctuation"
   [word]
   (= (last word) \.))
 
+;
+; Randomly pick the next word based on current word
+;
 (defn get-next-word
   "Randomly pick the next word based on current word"
   [probability-map word]
@@ -76,6 +82,9 @@
             (nth (keys follow-words) index)
             (recur new-sum (inc index))))))))
 
+;
+; Generate random text based on a word probability vector
+;
 (defn generate-text
   "Generate random text based on a word probability vector"
   [probability-map]
@@ -88,6 +97,9 @@
             (conj words curr-word)
             (recur (get-next-word probability-map curr-word) (conj words curr-word))))))))
 
+;
+; Main
+;
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
