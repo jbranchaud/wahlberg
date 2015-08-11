@@ -40,6 +40,32 @@
     {}
     (partition 2 1 (conj words ""))))
 
+(defn generate-tuple-frequency-map
+  "Generate a frequency map of word tuples to their following word"
+  [words]
+  (reduce
+    (fn [freq-map word-group]
+      (let [lead (butlast word-group)
+            follow (last word-group)
+            lead-map (or (get freq-map lead) {})
+            follow-val (or (get lead-map follow) 0)]
+        (assoc freq-map lead (assoc lead-map follow (inc follow-val)))))
+    {}
+    (partition 3 1 words)))
+
+(defn generate-nary-frequency-map
+  "Generate a frequency map of n-ary word tuples to their following word"
+  [words n]
+  (reduce
+    (fn [freq-map word-group]
+      (let [lead (butlast word-group)
+            follow (last word-group)
+            lead-map (or (get freq-map lead) {})
+            follow-val (or (get lead-map follow) 0)]
+        (assoc freq-map lead (assoc lead-map follow (inc follow-val)))))
+    {}
+    (partition (inc n) 1 words)))
+
 ;
 ; Generate a map of word probabilities as they follow one another
 ;
