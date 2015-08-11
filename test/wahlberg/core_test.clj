@@ -4,9 +4,19 @@
 
 (deftest source-text-test
   (testing "Get a string representing the source text"
-    (is (type (source-text "assets/catch-22-excerpt.txt")) java.lang.String))
+    (is (= (type (source-text "assets/catch-22-excerpt.txt")) java.lang.String)))
   (testing "Reports a bad source location and exits"
     (is (thrown? java.io.FileNotFoundException (source-text "assets/not-a-file.txt")))))
+
+(deftest clean-source-test
+  (testing "Remove invalid characters from source"
+    (is (= (clean-source-text "“That’s some catch, that Catch-22,” he observed")
+         "That's some catch, that Catch-22, he observed"))
+    (is (= (clean-source-text "There is a #hashtag & cash $ here?")
+         "There is a hashtag cash here?")))
+  (testing "Normalize whitespace"
+    (is (= (clean-source-text "There  is  excessive\twhitespace\nhere!")
+         "There is excessive whitespace here!")))) 
 
 ; (deftest tokenize-words-test
 ;   (testing "Tokenize words can tokenize based on whitespace"
