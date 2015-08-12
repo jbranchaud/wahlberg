@@ -18,6 +18,11 @@
     (is (= (clean-source-text "There  is  excessive\twhitespace\nhere!")
          "There is excessive whitespace here!")))) 
 
+(deftest split-source-test
+  (testing "Split the given string on spaces"
+    (is (= (split-source "This isn't what you might expect, I guess.")
+           ["This" "isn't" "what" "you" "might" "expect," "I" "guess."]))))
+
 ; (deftest tokenize-words-test
 ;   (testing "Tokenize words can tokenize based on whitespace"
 ;     (is (tokenize-words "these are some words")

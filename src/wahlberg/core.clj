@@ -17,6 +17,11 @@
     (clojure.string/replace #"\s+" " ")
     clojure.string/trim))
 
+(defn split-source
+  "Splits the source text into tokens"
+  [source]
+  (clojure.string/split source #" "))
+
 ;
 ; Main
 ;
