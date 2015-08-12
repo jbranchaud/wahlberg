@@ -8,7 +8,7 @@
   [source-location]
   (slurp source-location))
 
-(defn clean-source-text
+(defn clean-source
   "Removes all the invalid characters from the given source text"
   [source]
   (-> source

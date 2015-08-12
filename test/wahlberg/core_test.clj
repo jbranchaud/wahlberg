@@ -10,12 +10,12 @@
 
 (deftest clean-source-test
   (testing "Remove invalid characters from source"
-    (is (= (clean-source-text "“That’s some catch, that Catch-22,” he observed")
+    (is (= (clean-source "“That’s some catch, that Catch-22,” he observed")
          "That's some catch, that Catch-22, he observed"))
-    (is (= (clean-source-text "There is a #hashtag & cash $ here?")
+    (is (= (clean-source "There is a #hashtag & cash $ here?")
          "There is a hashtag cash here?")))
   (testing "Normalize whitespace"
-    (is (= (clean-source-text "There  is  excessive\twhitespace\nhere!")
+    (is (= (clean-source "There  is  excessive\twhitespace\nhere!")
          "There is excessive whitespace here!")))) 
 
 (deftest split-source-test
