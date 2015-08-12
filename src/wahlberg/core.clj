@@ -22,6 +22,22 @@
   [source]
   (clojure.string/split source #" "))
 
+(defn build-agg-prefix-map
+  "Build the aggregate mapping of prefixes to words"
+  [tokens prefix-length]
+  (agg-prefix-map (partition (+ 1 prefix-length) 1 tokens)))
+
+(defn agg-prefix-map
+  "Aggregate the prefix to word mapping from the partition groups"
+  [groups]
+  (reduce
+    #(let [prefix (butlast %2)
+           word (last %2)
+           mapping {prefix word}]
+       (assoc %1 mapping (+ (get %1 mapping 0) 1)))
+    {}
+    groups))
+
 ;
 ; Main
 ;
