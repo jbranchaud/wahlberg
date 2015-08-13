@@ -31,12 +31,31 @@
   "Aggregate the prefix to word mapping from the partition groups"
   [groups]
   (reduce
-    #(let [prefix (butlast %2)
+    #(let [mapping %1
+           prefix (butlast %2)
            word (last %2)
-           mapping {prefix word}]
-       (assoc %1 mapping (+ (get %1 mapping 0) 1)))
+           prefix-map (get mapping prefix)]
+       (assoc mapping prefix
+         (assoc prefix-map word (+ (get prefix-map word 0) 1))))
     {}
     groups))
+
+; (defn agg-map-sum
+;   "Sum the totals of everything in the agg-prefix-map"
+;   [agg-map]
+;   (reduce
+;     #(+ %1 (val %2))
+;     0
+;     agg-map))
+
+; (defn build-prob-prefix-map
+;   "Build the probability mapping of prefixes to words"
+;   [agg-map]
+;   (let [total (agg-map-sum agg-map)]
+;     (reduce
+;       #(assoc %1 (key %2) (/ (val %2) total))
+;       {}
+;       agg-map)))
 
 ;
 ; Main
