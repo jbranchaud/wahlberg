@@ -22,11 +22,6 @@
   [source]
   (clojure.string/split source #" "))
 
-(defn build-agg-prefix-map
-  "Build the aggregate mapping of prefixes to words"
-  [tokens prefix-length]
-  (agg-prefix-map (partition (+ 1 prefix-length) 1 tokens)))
-
 (defn agg-prefix-map
   "Aggregate the prefix to word mapping from the partition groups"
   [groups]
@@ -40,26 +35,49 @@
     {}
     groups))
 
-; (defn agg-map-sum
-;   "Sum the totals of everything in the agg-prefix-map"
-;   [agg-map]
-;   (reduce
-;     #(+ %1 (val %2))
-;     0
-;     agg-map))
+(defn build-agg-prefix-map
+  "Build the aggregate mapping of prefixes to words"
+  [tokens prefix-length]
+  (agg-prefix-map (partition (+ 1 prefix-length) 1 tokens)))
 
-; (defn build-prob-prefix-map
-;   "Build the probability mapping of prefixes to words"
-;   [agg-map]
-;   (let [total (agg-map-sum agg-map)]
-;     (reduce
-;       #(assoc %1 (key %2) (/ (val %2) total))
-;       {}
-;       agg-map)))
+(defn prefix-occurrence
+  "Count the number of occurrences of a prefix"
+  [prefix agg-map]
+  (reduce
+    #(+ %1 (val %2))
+    0
+    (get agg-map prefix)))
+
+(defn next-word
+  "grab a random next word"
+  [mapping prefix]
+  (when (seq (mapping prefix))
+    (-> (reduce
+              (fn [all [k v]]
+                (into all (repeat v k)))
+              []
+              (mapping prefix))
+      rand-nth)))
+
+(defn build-text
+  [mapping]
+  (clojure.string/join " "
+    (map first
+      (reductions
+        (fn [last-prefix _]
+          (vec (rest (conj last-prefix (next-word mapping last-prefix)))))
+        (rand-nth (keys mapping))
+        (range (+ (rand-int 20) 40))))))
 
 ;
 ; Main
 ;
 (defn -main
   [& args]
-  (println "Hello, World!"))
+  (println
+    (-> "assets/war-and-prejudice.txt"
+       source-text
+       clean-source
+       split-source
+       (build-agg-prefix-map 3)
+       build-text)))
