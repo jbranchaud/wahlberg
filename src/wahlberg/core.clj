@@ -79,5 +79,5 @@
        source-text
        clean-source
        split-source
-       (build-agg-prefix-map 3)
+       (build-agg-prefix-map 2)
        build-text)))
