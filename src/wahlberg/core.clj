@@ -59,6 +59,15 @@
               (mapping prefix))
       rand-nth)))
 
+(defn _text-length-range
+  [length]
+  (range (+ (rand-int 20) length)))
+
+(defn text-length
+  "Range for the length of the text to build"
+  ([] (_text-length-range 40))
+  ([length] (_text-length-range length)))
+
 (defn build-text
   [mapping]
   (clojure.string/join " "
@@ -67,7 +76,7 @@
         (fn [last-prefix _]
           (vec (rest (conj last-prefix (next-word mapping last-prefix)))))
         (rand-nth (keys mapping))
-        (range (+ (rand-int 20) 40))))))
+        (text-length)))))
 
 ;
 ; Main
